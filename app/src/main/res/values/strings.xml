@@ -35,9 +35,9 @@
 
     <string name="WT_Clear">Clear</string>
 
-    <string name="WP_Pressure">"Pressure : "</string>
-    <string name="WP_Wind">"Wind : "</string>
-    <string name="WP_Humidity">"Humidity : "</string>
+    <string name="WP_Pressure">"Pressure: "</string>
+    <string name="WP_Wind">"Wind: "</string>
+    <string name="WP_Humidity">"Humidity: "</string>
 
     <string name="Data_Pressure">" mm"</string>
     <string name="Data_Wind">" m/s"</string>

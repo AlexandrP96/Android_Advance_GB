@@ -6,13 +6,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.Menu;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 
@@ -39,9 +35,10 @@ import ru.alexbox.weatherapp.data.WeatherRequest;
 
 public class MainActivity extends AppCompatActivity implements SettingsDialogResult {
 
+
     private SettingsDialogBuilderFragment sdbFragment;
     private AppBarConfiguration mAppBarConfiguration;
-    private String unitsT;
+    private String unitsT = "&units=metric";
 
 
     @Override
@@ -51,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
         initToolbar();
         initFab();
         initDrawer();
-        Thread();
+        Thread(unitsT);
     }
 
 
@@ -84,7 +81,8 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
     public void onSettingsResult(String result) {
         TextView textView = findViewById(R.id.TempTypeView);
         textView.setText(R.string.TempF);
-        unitsT = "K";
+        String unitsT = "";
+        Thread(unitsT);
     }
 
 
@@ -109,9 +107,9 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
     }
 
 
-    private void Thread() {
+    private void Thread(String unitsT) {
         try {
-            final URL uri = getUrl("moscow", "&units=metric");
+            final URL uri = getUrl("moscow", unitsT);
             final Handler handler = new Handler();
             new Thread(new Runnable() {
                 @RequiresApi(api = Build.VERSION_CODES.N)
@@ -156,9 +154,9 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
     }
 
 
-    private static URL getUrl(String city, String units) throws MalformedURLException {
+    private static URL getUrl(String city, String unitsT) throws MalformedURLException {
         return new URL("https://api.openweathermap.org/data/2.5/weather?q="
-                + city + units + "&appid=" + BuildConfig.WEATHER_API_KEY);
+                + city + unitsT + "&appid=" + BuildConfig.WEATHER_API_KEY);
     }
 
 
@@ -174,19 +172,5 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
         Pressure.setText(String.format("%d", wr.getMain().getPressure()));
         Wind.setText(String.format("%d", wr.getWind().getSpeed()));
         Humidity.setText(String.format("%d", wr.getMain().getHumidity()));
-    }
-
-
-    private void WeatherAnimation() {
-        Animation animation;
-        animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.default_animation);
-        ImageView screen = findViewById(R.id.AnimationView);
-        screen.startAnimation(animation);
-    }
-
-
-    private void MakeSnack(View view, String text) {
-        Snackbar.make(view, text, Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
     }
 }

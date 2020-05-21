@@ -73,15 +73,15 @@
 
     <LinearLayout
         android:id="@+id/ParamLayout"
-        android:layout_width="280dp"
-        android:layout_height="153dp"
+        android:layout_width="330dp"
+        android:layout_height="137dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.595"
+        app:layout_constraintHorizontal_bias="0.641"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.837">
+        app:layout_constraintVertical_bias="0.786">
 
         <LinearLayout
             android:id="@+id/HorizontalL"
@@ -92,7 +92,7 @@
 
             <LinearLayout
                 android:id="@+id/ParLayout"
-                android:layout_width="100dp"
+                android:layout_width="120dp"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
@@ -160,7 +160,7 @@
 
             <LinearLayout
                 android:id="@+id/ParLayout3"
-                android:layout_width="80dp"
+                android:layout_width="130dp"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
