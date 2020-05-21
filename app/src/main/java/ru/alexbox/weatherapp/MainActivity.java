@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
         Thread(unitsT);
     }
 
-
     private void initDrawer() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -64,7 +63,6 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
         NavigationUI.setupWithNavController(navigationView, navController);
     }
 
-
     private void initFab() {
         sdbFragment = new SettingsDialogBuilderFragment();
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -76,7 +74,6 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
         });
     }
 
-
     @Override
     public void onSettingsResult(String result) {
         TextView textView = findViewById(R.id.TempTypeView);
@@ -85,12 +82,10 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
         Thread(unitsT);
     }
 
-
     private void initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -98,14 +93,12 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
         return true;
     }
 
-
     @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
-
 
     private void Thread(String unitsT) {
         try {
@@ -144,7 +137,6 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
         }
     }
 
-
     private HttpsURLConnection getHttpsURLConnection(URL uri) throws IOException {
         HttpsURLConnection urlC;
         urlC = (HttpsURLConnection) uri.openConnection();
@@ -153,12 +145,10 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
         return urlC;
     }
 
-
     private static URL getUrl(String city, String unitsT) throws MalformedURLException {
         return new URL("https://api.openweathermap.org/data/2.5/weather?q="
                 + city + unitsT + "&appid=" + BuildConfig.WEATHER_API_KEY);
     }
-
 
     @SuppressLint({"DefaultLocale", "SetTextI18n"})
     private void DisplayInfo(WeatherRequest wr) {
