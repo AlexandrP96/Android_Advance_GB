@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="menu_weather" >Погода</string>
+    <string name="menu_add" >Добавить город</string>
+    <string name="menu_about" >О нас</string>
+    <string name="menu_settings" >Настройки</string>
+
+    <string name="good_day">Добрый день!</string>
+    <string name="WeatherApp">Погодное приложение</string>
+
+    <string name="settings_WT">Изменить тип погоды?</string>
+    <string name="settings_WTT">* Из C в K</string>
+
+    <string name="Date">2020</string>
+    <string name="TempValue">0</string>
+    <string name="TempC">C</string>
+    <string name="TempF">K</string>
+    <string name="DefaultValue">" "</string>
+
+    <string name="City">Город</string>
+
+
+    <string name="Enter">Введите</string>
+
+    <string name="Fail">Ошибка</string>
+    <string name="ButtonAdd">Добавить</string>
+    <string name="Button_yes">Да</string>
+    <string name="Button_no">Нет</string>
+
+    <string name="WT_Clear">Ясно</string>
+
+    <string name="WP_Pressure">"Давление : "</string>
+    <string name="WP_Wind">"Ветер : "</string>
+    <string name="WP_Humidity">"Влажность : "</string>
+
+    <string name="Data_Pressure">" мм. рт. ст."</string>
+    <string name="Data_Wind">" м/с"</string>
+    <string name="Data_Humidity">" %"</string>
+    <string name="icon">icon</string>
+</resources>
