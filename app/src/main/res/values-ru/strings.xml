@@ -30,9 +30,9 @@
 
     <string name="WT_Clear">Ясно</string>
 
-    <string name="WP_Pressure">"Давление : "</string>
-    <string name="WP_Wind">"Ветер : "</string>
-    <string name="WP_Humidity">"Влажность : "</string>
+    <string name="WP_Pressure">"Давление: "</string>
+    <string name="WP_Wind">"Ветер: "</string>
+    <string name="WP_Humidity">"Влажность: "</string>
 
     <string name="Data_Pressure">" мм. рт. ст."</string>
     <string name="Data_Wind">" м/с"</string>
