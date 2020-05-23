@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
     private AppBarConfiguration mAppBarConfiguration;
     private String unitsT = "&units=metric";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,17 +73,16 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
         });
     }
 
-    @Override
-    public void onSettingsResult(String result) {
-        TextView textView = findViewById(R.id.TempTypeView);
-        textView.setText(R.string.TempF);
-        String unitsT = "";
-        Thread(unitsT);
-    }
-
     private void initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
+                || super.onSupportNavigateUp();
     }
 
     @Override
@@ -94,10 +92,11 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
     }
 
     @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
-                || super.onSupportNavigateUp();
+    public void onSettingsResult(String result) {
+        TextView textView = findViewById(R.id.TempTypeView);
+        textView.setText(R.string.TempF);
+        String unitsT = "";
+        Thread(unitsT);
     }
 
     private void Thread(String unitsT) {
