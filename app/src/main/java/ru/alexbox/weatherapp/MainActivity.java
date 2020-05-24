@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
 
     private SettingsDialogBuilderFragment sdbFragment;
     private AppBarConfiguration mAppBarConfiguration;
-//    private String unitsT = "&units=metric";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +97,6 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
         TextView textView = findViewById(R.id.TempTypeView);
         textView.setText(R.string.TempF);
         initThread();
-//        String unitsT = "";
     }
 
     @SuppressLint({"DefaultLocale", "SetTextI18n"})

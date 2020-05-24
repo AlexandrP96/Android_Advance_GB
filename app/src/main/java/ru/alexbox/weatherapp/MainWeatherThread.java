@@ -33,39 +33,43 @@ class MainWeatherThread {
         void onResult(WeatherRequest wr);
     }
 
-    void Logic() throws MalformedURLException {
-        final URL uri = getUrl(city, unitsT);
-        final Handler handler = new Handler(Looper.myLooper());
-        new Thread(new Runnable() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void run() {
-                HttpsURLConnection urlC = null;
-                try {
-                    urlC = getHttpsURLConnection(uri);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                BufferedReader in = null;
-                try {
-                    if (urlC != null) {
-                        in = new BufferedReader(new InputStreamReader(urlC.getInputStream()));
+    void Logic() {
+        try {
+            final URL uri = getUrl(city, unitsT);
+            final Handler handler = new Handler(Looper.myLooper());
+            new Thread(new Runnable() {
+                @RequiresApi(api = Build.VERSION_CODES.N)
+                @Override
+                public void run() {
+                    HttpsURLConnection urlC = null;
+                    try {
+                        urlC = getHttpsURLConnection(uri);
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                String result = getLines(in);
-                Gson gson = new Gson();
-                final WeatherRequest wr = gson.fromJson(result, WeatherRequest.class);
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        threadListener.onResult(wr);
+                    BufferedReader in = null;
+                    try {
+                        if (urlC != null) {
+                            in = new BufferedReader(new InputStreamReader(urlC.getInputStream()));
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                });
-            }
+                    String result = getLines(in);
+                    Gson gson = new Gson();
+                    final WeatherRequest wr = gson.fromJson(result, WeatherRequest.class);
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            threadListener.onResult(wr);
+                        }
+                    });
+                }
 
-        }).start();
+            }).start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private HttpsURLConnection getHttpsURLConnection(URL uri) throws IOException {

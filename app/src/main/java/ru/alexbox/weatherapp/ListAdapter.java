@@ -6,20 +6,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.List;
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
-    private List<String> data;
-    private Fragment fragment;
-    private int menuPosition;
+    private String[] data;
 
-    public ListAdapter(List<String> data, Fragment fragment) {
+    public ListAdapter(String[] data) {
         this.data = data;
-        this.fragment = fragment;
     }
 
     @NonNull
@@ -31,34 +25,13 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        TextView textElement = holder.getTextElement();
-        textElement.setText(data.get(position));
-
-        textElement.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                menuPosition = position;
-            }
-        });
-
-        if (fragment != null) {
-            fragment.registerForContextMenu(textElement);
-        }
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        holder.getTextView().setText(data[position]);
     }
 
     @Override
     public int getItemCount() {
-        return data == null ? 0 : data.size();
-    }
-
-    public void addItem(String element) {
-        data.add(element);
-        notifyItemInserted(data.size()-1);
-    }
-
-    public int getMenuPosition() {
-        return menuPosition;
+        return data.length;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -71,7 +44,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
             ItemCityView = itemView.findViewById(R.id.ItemCityView);
         }
 
-        TextView getTextElement() {
+        TextView getTextView() {
             return ItemCityView;
         }
     }
