@@ -8,30 +8,31 @@
     android:background="@drawable/nav_bar"
     tools:context=".ui.gallery.GalleryFragment">
 
-    <EditText
-        android:id="@+id/CityText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:autofillHints=""
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="@string/Enter"
+    <TextView
+        android:id="@+id/ChoseView"
+        android:layout_width="329dp"
+        android:layout_height="48dp"
+        android:text="@string/ChoseCity"
+        android:textColor="@color/colorTextDefault"
+        android:textSize="@dimen/textSizeB"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.164"
-        tools:ignore="LabelFor" />
+        app:layout_constraintVertical_bias="0.058" />
 
-    <Button
-        android:id="@+id/buttonAdd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/ButtonAdd"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/RecyclerCity"
+        android:layout_width="299dp"
+        android:layout_height="438dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginLeft="1dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginRight="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.666" />
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
