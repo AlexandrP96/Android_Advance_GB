@@ -19,24 +19,22 @@ import javax.net.ssl.HttpsURLConnection;
 
 import ru.alexbox.weatherapp.data.WeatherRequest;
 
-public class MainWeatherThread {
+class MainWeatherThread {
 
     private final ThreadListener threadListener;
     private String unitsT = "&units=metric";
+    private String city = "moscow";
 
-    // Конструктор
-    public MainWeatherThread(ThreadListener threadListener) {
+    MainWeatherThread(ThreadListener threadListener) {
         this.threadListener = threadListener;
     }
 
-    // Интерфейс
     public interface ThreadListener {
         void onResult(WeatherRequest wr);
     }
 
-    // Сам поток
-    public void Logic() throws MalformedURLException {
-        final URL uri = getUrl("moscow", unitsT);
+    void Logic() throws MalformedURLException {
+        final URL uri = getUrl(city, unitsT);
         final Handler handler = new Handler(Looper.myLooper());
         new Thread(new Runnable() {
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -50,7 +48,9 @@ public class MainWeatherThread {
                 }
                 BufferedReader in = null;
                 try {
-                    in = new BufferedReader(new InputStreamReader(urlC.getInputStream()));
+                    if (urlC != null) {
+                        in = new BufferedReader(new InputStreamReader(urlC.getInputStream()));
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -68,7 +68,6 @@ public class MainWeatherThread {
         }).start();
     }
 
-    // Кусок кода из старой реализации
     private HttpsURLConnection getHttpsURLConnection(URL uri) throws IOException {
         HttpsURLConnection urlC;
         urlC = (HttpsURLConnection) uri.openConnection();
@@ -77,7 +76,6 @@ public class MainWeatherThread {
         return urlC;
     }
 
-    // Кусок кода из старой реализации
     private static URL getUrl(String city, String unitsT) throws MalformedURLException {
         return new URL("https://api.openweathermap.org/data/2.5/weather?q="
                 + city + unitsT + "&appid=" + BuildConfig.WEATHER_API_KEY);

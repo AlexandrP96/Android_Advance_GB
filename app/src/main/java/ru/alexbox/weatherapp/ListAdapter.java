@@ -57,36 +57,21 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         notifyItemInserted(data.size()-1);
     }
 
-    public void updateItem(String element, int position) {
-        data.set(position, element);
-        notifyItemChanged(position);
-    }
-
-    public void removeItem(int position) {
-        data.remove(position);
-        notifyItemRemoved(position);
-    }
-
-    public void clearItems() {
-        data.clear();
-        notifyDataSetChanged();
-    }
-
     public int getMenuPosition() {
         return menuPosition;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView ItemCityView;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             ItemCityView = itemView.findViewById(R.id.ItemCityView);
         }
 
-        public TextView getTextElement() {
+        TextView getTextElement() {
             return ItemCityView;
         }
     }

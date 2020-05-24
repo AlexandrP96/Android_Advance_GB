@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import java.net.MalformedURLException;
+
 public class SettingsDialogBuilderFragment extends DialogFragment {
 
     @NonNull
@@ -22,7 +24,11 @@ public class SettingsDialogBuilderFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dismiss();
-                        sdRes.onSettingsResult(getString(R.string.Button_yes));
+                        try {
+                            sdRes.onSettingsResult(getString(R.string.Button_yes));
+                        } catch (MalformedURLException e) {
+                            e.printStackTrace();
+                        }
                     }
                 })
                 .setCancelable(true)
@@ -30,7 +36,11 @@ public class SettingsDialogBuilderFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dismiss();
-                        sdRes.onSettingsResult(getString(R.string.Button_no));
+                        try {
+                            sdRes.onSettingsResult(getString(R.string.Button_no));
+                        } catch (MalformedURLException e) {
+                            e.printStackTrace();
+                        }
                     }
                 })
                 .setMessage(R.string.settings_WTT);

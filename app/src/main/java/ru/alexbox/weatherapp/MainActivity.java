@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
 
     private SettingsDialogBuilderFragment sdbFragment;
     private AppBarConfiguration mAppBarConfiguration;
-    private String unitsT = "&units=metric";
+//    private String unitsT = "&units=metric";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,10 +94,11 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
     }
 
     @Override
-    public void onSettingsResult(String result) {
+    public void onSettingsResult(String result) throws MalformedURLException {
         TextView textView = findViewById(R.id.TempTypeView);
         textView.setText(R.string.TempF);
-        String unitsT = "";
+        initThread();
+//        String unitsT = "";
     }
 
     @SuppressLint({"DefaultLocale", "SetTextI18n"})
@@ -113,5 +114,4 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
         Wind.setText(String.format("%d", wr.getWind().getSpeed()));
         Humidity.setText(String.format("%d", wr.getMain().getHumidity()));
     }
-
 }

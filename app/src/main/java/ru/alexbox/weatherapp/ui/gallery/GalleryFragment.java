@@ -1,5 +1,6 @@
 package ru.alexbox.weatherapp.ui.gallery;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -28,16 +29,19 @@ public class GalleryFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_gallery, container, false);
-        initList(view);
+        String[] data = getResources().getStringArray(R.array.cities);
+        initList(view, data);
         return view;
     }
 
-    private void initList(View view) {
+    private void initList(View view, String[] data) {
+
         RecyclerView recyclerView = view.findViewById(R.id.RecyclerCity);
         recyclerView.setHasFixedSize(true);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
+
 
         adapter = new ListAdapter(initData(), this);
         recyclerView.setAdapter(adapter);
@@ -58,23 +62,13 @@ public class GalleryFragment extends Fragment {
         inflater.inflate(R.menu.context_menu, menu);
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-        ContextMenu.ContextMenuInfo menuInfo = item.getMenuInfo();
         int id = item.getItemId();
-        switch (id) {
-            case R.id.add_context:
-                adapter.addItem(String.format("New element %d", adapter.getItemCount()));
-                return true;
-            case R.id.update_context:
-                adapter.updateItem(String.format("New element %d", adapter.getMenuPosition()), adapter.getMenuPosition());
-                return true;
-            case R.id.clear_context:
-                adapter.clearItems();
-                return true;
-            case R.id.remove_context:
-                adapter.removeItem(adapter.getMenuPosition());
-                return true;
+        if (id == R.id.add_context) {
+            adapter.addItem(String.format("New element %d", adapter.getItemCount()));
+            return true;
         }
         return super.onContextItemSelected(item);
     }
