@@ -15,10 +15,10 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.149"
+        app:layout_constraintHorizontal_bias="0.172"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.068">
+        app:layout_constraintVertical_bias="0.08">
 
         <TextView
             android:id="@+id/CityView"
@@ -73,20 +73,21 @@
 
     <LinearLayout
         android:id="@+id/ParamLayout"
-        android:layout_width="330dp"
-        android:layout_height="137dp"
+        android:layout_width="349dp"
+        android:layout_height="186dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.641"
+        app:layout_constraintHorizontal_bias="0.741"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.786">
+        app:layout_constraintVertical_bias="0.922">
 
         <LinearLayout
             android:id="@+id/HorizontalL"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:orientation="horizontal"
             tools:ignore="UselessParent">
 
@@ -198,15 +199,16 @@
 
     <ImageView
         android:id="@+id/AnimationView"
-        android:layout_width="201dp"
-        android:layout_height="132dp"
+        android:layout_width="0dp"
+        android:layout_height="142dp"
         android:contentDescription="@string/icon"
         android:src="@drawable/cloydys"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.455"
+        app:layout_constraintVertical_bias="0.436"
         app:srcCompat="@drawable/cloydys" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
