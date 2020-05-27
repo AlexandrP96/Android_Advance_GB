@@ -9,6 +9,9 @@ import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -17,9 +20,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import java.net.MalformedURLException;
-
 import ru.alexbox.weatherapp.data.WeatherRequest;
+import ru.alexbox.weatherapp.ui.home.HomeFragment;
 
 public class MainActivity extends AppCompatActivity implements SettingsDialogResult {
 
@@ -34,11 +36,7 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
         initToolbar();
         initFab();
         initDrawer();
-        try {
-            initThread();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+        initThread();
     }
 
     private void initDrawer() {
@@ -69,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
         setSupportActionBar(toolbar);
     }
 
-    private void initThread() throws MalformedURLException {
+    private void initThread() {
         MainWeatherThread mwt = new MainWeatherThread(new MainWeatherThread.ThreadListener() {
             @Override
             public void onResult(WeatherRequest wr) {
@@ -93,10 +91,19 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
     }
 
     @Override
-    public void onSettingsResult(String result) throws MalformedURLException {
+    public void onSettingsResult(String result) {
         TextView textView = findViewById(R.id.TempTypeView);
         textView.setText(R.string.TempF);
         initThread();
+        FragmentReplacer();
+    }
+
+    public void FragmentReplacer() {
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        HomeFragment hm = new HomeFragment();
+        ft.replace(R.id.fragment_gallery, hm);
+        ft.commit();
     }
 
     @SuppressLint({"DefaultLocale", "SetTextI18n"})
@@ -107,8 +114,8 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
         TextView Wind = findViewById(R.id.WindViewP);
         TextView Humidity = findViewById(R.id.HumidityViewP);
         City.setText(wr.getName());
-        Temp.setText(String.format("%f1", wr.getMain().getTemp()));
-        Pressure.setText(String.format("%d", wr.getMain().getPressure()));
+        Temp.setText(String.format("+ %.0f", wr.getMain().getTemp()));
+        Pressure.setText(String.format("%.0f", wr.getMain().getPressure() * 0.750062));
         Wind.setText(String.format("%d", wr.getWind().getSpeed()));
         Humidity.setText(String.format("%d", wr.getMain().getHumidity()));
     }

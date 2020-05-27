@@ -1,6 +1,7 @@
 package ru.alexbox.weatherapp.data;
 
 public class WeatherRequest {
+
     private Coord coord;
     private Weather[] weather;
     private Main main;

@@ -14,8 +14,8 @@
 
     <string name="Date">2020</string>
     <string name="TempValue">0</string>
-    <string name="TempC">C</string>
-    <string name="TempF">K</string>
+    <string name="TempC"> C</string>
+    <string name="TempF"> K</string>
     <string name="DefaultValue">" "</string>
 
     <string name="City">Город</string>

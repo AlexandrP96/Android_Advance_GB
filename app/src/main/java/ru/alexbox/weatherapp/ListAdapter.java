@@ -40,8 +40,15 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-
             ItemCityView = itemView.findViewById(R.id.ItemCityView);
+
+            ItemCityView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (ItemCityView != null) {
+                    }
+                }
+            });
         }
 
         TextView getTextView() {

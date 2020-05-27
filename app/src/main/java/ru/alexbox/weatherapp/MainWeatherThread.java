@@ -55,7 +55,10 @@ class MainWeatherThread {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    String result = getLines(in);
+                    String result = null;
+                    if (in != null) {
+                        result = getLines(in);
+                    }
                     Gson gson = new Gson();
                     final WeatherRequest wr = gson.fromJson(result, WeatherRequest.class);
                     handler.post(new Runnable() {

@@ -23,8 +23,8 @@
 
     <string name="DefaultValue">" "</string>
     <string name="TempValue">0</string>
-    <string name="TempC">C</string>
-    <string name="TempF">K</string>
+    <string name="TempC"> C</string>
+    <string name="TempF"> K</string>
     <string name="Fail">Fail</string>
 
     <string name="City">City</string>
