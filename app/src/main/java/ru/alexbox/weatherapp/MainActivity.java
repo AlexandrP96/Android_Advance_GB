@@ -2,11 +2,13 @@ package ru.alexbox.weatherapp;
 
 import android.os.Bundle;
 import android.view.Menu;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.squareup.picasso.Picasso;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -26,7 +28,6 @@ import ru.alexbox.weatherapp.interfaces.IOpenWeather;
 import ru.alexbox.weatherapp.interfaces.SettingsDialogResult;
 import ru.alexbox.weatherapp.retrofit_data.WeatherRequest;
 
-@SuppressWarnings("NullableProblems")
 public class MainActivity extends AppCompatActivity implements SettingsDialogResult {
 
     private SettingsDialogBuilderFragment sdbFragment;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
         initFab();
         initDrawer();
         initRetrofit();
+        initImage();
     }
 
     private void initDrawer() {
@@ -72,6 +74,18 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
         requestRetrofit("moscow", "metric");
     }
 
+    private void initImage() {
+        ImageView image = findViewById(R.id.AnimationView);
+        if (image != null) {
+            Picasso.get()
+                    .load("https://unsplash.com/photos/ap3LXI0fPJY")
+                    .resize(90, 90)
+                    .into(image);
+        } else {
+            Toast.makeText(getApplicationContext(), "Picasso Fail", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -93,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
     }
 
     private void requestRetrofit(String city, String metric) {
+        //noinspection NullableProblems
         iOpenWeather.loadWeather(city, metric, BuildConfig.WEATHER_API_KEY)
                 .enqueue(new Callback<ru.alexbox.weatherapp.retrofit_data.WeatherRequest>() {
                     @Override
