@@ -15,10 +15,10 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.172"
+        app:layout_constraintHorizontal_bias="0.07"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.08">
+        app:layout_constraintVertical_bias="0.067">
 
         <TextView
             android:id="@+id/CityView"
@@ -42,13 +42,14 @@
     <LinearLayout
         android:id="@+id/TempLayout"
         android:layout_width="wrap_content"
-        android:layout_height="66dp"
+        android:layout_height="75dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.257">
+        app:layout_constraintVertical_bias="0.243">
 
         <TextView
             android:id="@+id/TempView"
@@ -72,15 +73,15 @@
 
     <LinearLayout
         android:id="@+id/ParamLayout"
-        android:layout_width="349dp"
-        android:layout_height="186dp"
+        android:layout_width="347dp"
+        android:layout_height="119dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.741"
+        app:layout_constraintHorizontal_bias="0.75"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.922">
+        app:layout_constraintVertical_bias="0.766">
 
         <LinearLayout
             android:id="@+id/HorizontalL"
@@ -209,5 +210,69 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.436"
         app:srcCompat="@drawable/cloydys" />
+
+    <LinearLayout
+        android:id="@+id/MinTempView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.146"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.249">
+
+        <TextView
+            android:id="@+id/MinimalTemp"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:text="@string/Data_Min_Temp"
+            android:textColor="@color/colorTextDefault"
+            android:textSize="@dimen/textSizeS"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/MinimumViewPar"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/DefaultValue"
+            android:textColor="@color/colorTextDefault"
+            android:textSize="@dimen/textSizeS"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/MaxTempView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.900"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.249">
+
+        <TextView
+            android:id="@+id/MaximumTemp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/Data_Max_Temp"
+            android:textColor="@color/colorTextDefault"
+            android:textSize="@dimen/textSizeS"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/MaximumViewPar"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/DefaultValue"
+            android:textColor="@color/colorTextDefault"
+            android:textSize="@dimen/textSizeS"
+            android:textStyle="bold" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

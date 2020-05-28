@@ -1,11 +1,13 @@
 package ru.alexbox.weatherapp;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+@SuppressLint("Registered")
 public class MyApplication extends Application {
     public static Retrofit retrofit;
 

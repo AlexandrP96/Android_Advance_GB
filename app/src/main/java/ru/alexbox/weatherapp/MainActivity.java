@@ -24,6 +24,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import ru.alexbox.weatherapp.interfaces.IOpenWeather;
 import ru.alexbox.weatherapp.interfaces.SettingsDialogResult;
+import ru.alexbox.weatherapp.retrofit_data.WeatherRequest;
 
 @SuppressWarnings("NullableProblems")
 public class MainActivity extends AppCompatActivity implements SettingsDialogResult {
@@ -95,11 +96,10 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
         iOpenWeather.loadWeather(city, metric, BuildConfig.WEATHER_API_KEY)
                 .enqueue(new Callback<ru.alexbox.weatherapp.retrofit_data.WeatherRequest>() {
                     @Override
-                    public void onResponse(Call<ru.alexbox.weatherapp.retrofit_data.WeatherRequest> call, Response<ru.alexbox.weatherapp.retrofit_data.WeatherRequest> response) {
+                    public void onResponse(Call<ru.alexbox.weatherapp.retrofit_data.WeatherRequest> call,
+                                           Response<ru.alexbox.weatherapp.retrofit_data.WeatherRequest> response) {
                         if (response.body() != null && response.isSuccessful()) {
-                            TextView Temp = findViewById(R.id.TempView);
-                            float result = response.body().getMain().getTemp();
-                            Temp.setText(String.format(Locale.getDefault(), "%.0f", result));
+                            DisplayInfo(response);
                         }
                     }
 
@@ -110,17 +110,29 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
                 });
     }
 
-//    @SuppressLint({"DefaultLocale", "SetTextI18n"})
-//    private void DisplayInfo(WeatherRequest wr) {
-//        TextView City = findViewById(R.id.CityView);
-//        TextView Temp = findViewById(R.id.TempView);
-//        TextView Pressure = findViewById(R.id.PressureViewP);
-//        TextView Wind = findViewById(R.id.WindViewP);
-//        TextView Humidity = findViewById(R.id.HumidityViewP);
-//        City.setText(wr.getName());
-//        Temp.setText(String.format("+ %.0f", wr.getMain().getTemp()));
-//        Pressure.setText(String.format("%.0f", wr.getMain().getPressure() * 0.750062));
-//        Wind.setText(String.format("%d", wr.getWind().getSpeed()));
-//        Humidity.setText(String.format("%d", wr.getMain().getHumidity()));
-//    }
+    private void DisplayInfo(Response<WeatherRequest> response) {
+        TextView City = findViewById(R.id.CityView);
+        TextView Temp = findViewById(R.id.TempView);
+        TextView Pressure = findViewById(R.id.PressureViewP);
+        TextView Wind = findViewById(R.id.WindViewP);
+        TextView Humidity = findViewById(R.id.HumidityViewP);
+        TextView Min = findViewById(R.id.MinimumViewPar);
+        TextView Max = findViewById(R.id.MaximumViewPar);
+
+        float temperature = response.body().getMain().getTemp();
+        float minTemp = response.body().getMain().getTemp_min();
+        float maxTemp = response.body().getMain().getTemp_max();
+        float wind = response.body().getWind().getSpeed();
+        float pressure = response.body().getMain().getPressure();
+        int humidity = response.body().getMain().getHumidity();
+        String city = response.body().getName();
+
+        City.setText(city);
+        Temp.setText(String.format(Locale.getDefault(), "+ %.0f", temperature));
+        Wind.setText(String.format(Locale.getDefault(), "%.0f", wind));
+        Pressure.setText(String.format(Locale.getDefault(), "%.0f", pressure * 0.750062));
+        Humidity.setText(String.format(Locale.getDefault(), "%d", humidity));
+        Min.setText(String.format(Locale.getDefault(), "%.0f", minTemp));
+        Max.setText(String.format(Locale.getDefault(), "%.0f", maxTemp));
+    }
 }
