@@ -1,17 +1,13 @@
 package ru.alexbox.weatherapp;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.view.View;
 import android.view.Menu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -20,14 +16,21 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import ru.alexbox.weatherapp.data.WeatherRequest;
-import ru.alexbox.weatherapp.ui.home.HomeFragment;
+import java.util.Locale;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import ru.alexbox.weatherapp.interfaces.IOpenWeather;
+import ru.alexbox.weatherapp.interfaces.SettingsDialogResult;
+
+@SuppressWarnings("NullableProblems")
 public class MainActivity extends AppCompatActivity implements SettingsDialogResult {
-
 
     private SettingsDialogBuilderFragment sdbFragment;
     private AppBarConfiguration mAppBarConfiguration;
+    private IOpenWeather iOpenWeather;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
         initToolbar();
         initFab();
         initDrawer();
-        initThread();
+        initRetrofit();
     }
 
     private void initDrawer() {
@@ -54,12 +57,7 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
     private void initFab() {
         sdbFragment = new SettingsDialogBuilderFragment();
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sdbFragment.show(getSupportFragmentManager(), "sdbFragment");
-            }
-        });
+        fab.setOnClickListener(view -> sdbFragment.show(getSupportFragmentManager(), "sdbFragment"));
     }
 
     private void initToolbar() {
@@ -67,14 +65,10 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
         setSupportActionBar(toolbar);
     }
 
-    private void initThread() {
-        MainWeatherThread mwt = new MainWeatherThread(new MainWeatherThread.ThreadListener() {
-            @Override
-            public void onResult(WeatherRequest wr) {
-                DisplayInfo(wr);
-            }
-        });
-        mwt.Logic();
+    private void initRetrofit() {
+        Retrofit retrofit = MyApplication.getRetrofitInstance();
+        iOpenWeather = retrofit.create(IOpenWeather.class);
+        requestRetrofit("moscow", "metric");
     }
 
     @Override
@@ -94,29 +88,39 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
     public void onSettingsResult(String result) {
         TextView textView = findViewById(R.id.TempTypeView);
         textView.setText(R.string.TempF);
-        initThread();
-        FragmentReplacer();
+        requestRetrofit("moscow", "");
     }
 
-    public void FragmentReplacer() {
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        HomeFragment hm = new HomeFragment();
-        ft.replace(R.id.fragment_gallery, hm);
-        ft.commit();
+    private void requestRetrofit(String city, String metric) {
+        iOpenWeather.loadWeather(city, metric, BuildConfig.WEATHER_API_KEY)
+                .enqueue(new Callback<ru.alexbox.weatherapp.retrofit_data.WeatherRequest>() {
+                    @Override
+                    public void onResponse(Call<ru.alexbox.weatherapp.retrofit_data.WeatherRequest> call, Response<ru.alexbox.weatherapp.retrofit_data.WeatherRequest> response) {
+                        if (response.body() != null && response.isSuccessful()) {
+                            TextView Temp = findViewById(R.id.TempView);
+                            float result = response.body().getMain().getTemp();
+                            Temp.setText(String.format(Locale.getDefault(), "%.0f", result));
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ru.alexbox.weatherapp.retrofit_data.WeatherRequest> call, Throwable t) {
+                        Toast.makeText(MainActivity.this, R.string.Fail, Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
-    @SuppressLint({"DefaultLocale", "SetTextI18n"})
-    private void DisplayInfo(WeatherRequest wr) {
-        TextView City = findViewById(R.id.CityView);
-        TextView Temp = findViewById(R.id.TempView);
-        TextView Pressure = findViewById(R.id.PressureViewP);
-        TextView Wind = findViewById(R.id.WindViewP);
-        TextView Humidity = findViewById(R.id.HumidityViewP);
-        City.setText(wr.getName());
-        Temp.setText(String.format("+ %.0f", wr.getMain().getTemp()));
-        Pressure.setText(String.format("%.0f", wr.getMain().getPressure() * 0.750062));
-        Wind.setText(String.format("%d", wr.getWind().getSpeed()));
-        Humidity.setText(String.format("%d", wr.getMain().getHumidity()));
-    }
+//    @SuppressLint({"DefaultLocale", "SetTextI18n"})
+//    private void DisplayInfo(WeatherRequest wr) {
+//        TextView City = findViewById(R.id.CityView);
+//        TextView Temp = findViewById(R.id.TempView);
+//        TextView Pressure = findViewById(R.id.PressureViewP);
+//        TextView Wind = findViewById(R.id.WindViewP);
+//        TextView Humidity = findViewById(R.id.HumidityViewP);
+//        City.setText(wr.getName());
+//        Temp.setText(String.format("+ %.0f", wr.getMain().getTemp()));
+//        Pressure.setText(String.format("%.0f", wr.getMain().getPressure() * 0.750062));
+//        Wind.setText(String.format("%d", wr.getWind().getSpeed()));
+//        Humidity.setText(String.format("%d", wr.getMain().getHumidity()));
+//    }
 }
