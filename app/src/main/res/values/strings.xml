@@ -23,8 +23,8 @@
 
     <string name="DefaultValue">" "</string>
     <string name="TempValue">0</string>
-    <string name="TempC">C</string>
-    <string name="TempF">K</string>
+    <string name="TempC"> C</string>
+    <string name="TempF"> K</string>
     <string name="Fail">Fail</string>
 
     <string name="City">City</string>
@@ -39,6 +39,8 @@
     <string name="WP_Wind">"Wind: "</string>
     <string name="WP_Humidity">"Humidity: "</string>
 
+    <string name="Data_Max_Temp">"Max"</string>
+    <string name="Data_Min_Temp">"Min"</string>
     <string name="Data_Pressure">" mm"</string>
     <string name="Data_Wind">" m/s"</string>
     <string name="Data_Humidity">" %"</string>

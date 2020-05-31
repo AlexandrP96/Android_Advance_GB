@@ -14,8 +14,8 @@
 
     <string name="Date">2020</string>
     <string name="TempValue">0</string>
-    <string name="TempC">C</string>
-    <string name="TempF">K</string>
+    <string name="TempC"> C</string>
+    <string name="TempF"> K</string>
     <string name="DefaultValue">" "</string>
 
     <string name="City">Город</string>
@@ -33,6 +33,8 @@
     <string name="WP_Wind">"Ветер: "</string>
     <string name="WP_Humidity">"Влажность: "</string>
 
+    <string name="Data_Max_Temp">"Макс"</string>
+    <string name="Data_Min_Temp">"Мин"</string>
     <string name="Data_Pressure">" мм. рт. ст."</string>
     <string name="Data_Wind">" м/с"</string>
     <string name="Data_Humidity">" %"</string>

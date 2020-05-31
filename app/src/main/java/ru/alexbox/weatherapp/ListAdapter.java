@@ -40,8 +40,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-
             ItemCityView = itemView.findViewById(R.id.ItemCityView);
+
         }
 
         TextView getTextView() {
