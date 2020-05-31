@@ -2,13 +2,10 @@ package ru.alexbox.weatherapp;
 
 import android.os.Bundle;
 import android.view.Menu;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
-import com.squareup.picasso.Picasso;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -27,7 +24,7 @@ import ru.alexbox.weatherapp.retrofit_data.WeatherRequest;
 public class MainActivity extends AppCompatActivity implements SettingsDialogResult {
 
     // Добавить экран с историей поиска
-    // Перенести Retrofit в другой класс
+    // Перенести Retrofit в другой класс ++
     // Прикрутить room для сохранения истории поиска
     // SharedPreferences для сохранения и загрузки последнего города
 
@@ -42,7 +39,6 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
         initFab();
         initDrawer();
         initRetrofit();
-        initImage();
     }
 
     private void initDrawer() {
@@ -66,20 +62,6 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
     private void initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-    }
-
-
-
-    private void initImage() {
-        ImageView image = findViewById(R.id.AnimationView);
-        if (image != null) {
-            Picasso.get()
-                    .load("https://unsplash.com/photos/ap3LXI0fPJY")
-                    .resize(90, 90)
-                    .into(image);
-        } else {
-            Toast.makeText(getApplicationContext(), "Picasso Fail", Toast.LENGTH_SHORT).show();
-        }
     }
 
     @Override
