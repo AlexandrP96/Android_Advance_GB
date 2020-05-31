@@ -1,4 +1,4 @@
-package ru.alexbox.weatherapp;
+package ru.alexbox.weatherapp.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -10,7 +10,7 @@ import androidx.fragment.app.DialogFragment;
 
 import java.net.MalformedURLException;
 
-import ru.alexbox.weatherapp.interfaces.SettingsDialogResult;
+import ru.alexbox.weatherapp.R;
 
 public class SettingsDialogBuilderFragment extends DialogFragment {
 

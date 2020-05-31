@@ -1,4 +1,4 @@
-package ru.alexbox.weatherapp;
+package ru.alexbox.weatherapp.retrofit;
 
 import android.util.Log;
 

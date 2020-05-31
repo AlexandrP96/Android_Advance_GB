@@ -10,10 +10,14 @@ import androidx.fragment.app.Fragment;
 
 import ru.alexbox.weatherapp.R;
 
+
 public class SlideshowFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_slideshow, container, false);
+        View view = inflater.inflate(R.layout.fragment_slideshow, container, false);
+
+        return view;
     }
+
 }

@@ -1,4 +1,4 @@
-package ru.alexbox.weatherapp.interfaces;
+package ru.alexbox.weatherapp.retrofit;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

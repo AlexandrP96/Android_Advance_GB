@@ -5,6 +5,7 @@
     <string name="menu_add" >Добавить город</string>
     <string name="menu_about" >О нас</string>
     <string name="menu_settings" >Настройки</string>
+    <string name="menu_history">История</string>
 
     <string name="good_day">Добрый день!</string>
     <string name="WeatherApp">Погодное приложение</string>

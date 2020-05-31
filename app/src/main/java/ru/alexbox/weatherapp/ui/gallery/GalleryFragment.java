@@ -43,7 +43,7 @@ public class GalleryFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        ListAdapter adapter = new ListAdapter(initData(), this);
+        ListAdapter adapter = new ListAdapter(initData(), R.id.fragment_gallery);
         recyclerView.setAdapter(adapter);
     }
 

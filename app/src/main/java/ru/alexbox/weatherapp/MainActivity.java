@@ -18,7 +18,9 @@ import androidx.appcompat.widget.Toolbar;
 import java.util.Locale;
 
 import retrofit2.Response;
-import ru.alexbox.weatherapp.interfaces.SettingsDialogResult;
+import ru.alexbox.weatherapp.dialog.SettingsDialogBuilderFragment;
+import ru.alexbox.weatherapp.dialog.SettingsDialogResult;
+import ru.alexbox.weatherapp.retrofit.Retrofit;
 import ru.alexbox.weatherapp.retrofit_data.WeatherRequest;
 
 public class MainActivity extends AppCompatActivity implements SettingsDialogResult {
@@ -97,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
         TextView Min = findViewById(R.id.MinimumViewPar);
         TextView Max = findViewById(R.id.MaximumViewPar);
 
+        assert response.body() != null;
         float temperature = response.body().getMain().getTemp();
         float minTemp = response.body().getMain().getTemp_min();
         float maxTemp = response.body().getMain().getTemp_max();

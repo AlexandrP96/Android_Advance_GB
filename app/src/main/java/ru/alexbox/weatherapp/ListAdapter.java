@@ -16,7 +16,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     private List<String> data;
     private Fragment fragment;
 
-    public ListAdapter(List<String> data,  Fragment fragment) {
+    public ListAdapter(List<String> data, int fragment_gallery) {
         this.data = data;
         this.fragment = fragment;
     }

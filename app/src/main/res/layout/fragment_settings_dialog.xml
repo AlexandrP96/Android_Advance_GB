@@ -10,7 +10,7 @@
         android:id="@+id/fsdView"
         android:layout_width="274dp"
         android:layout_height="50dp"
-        android:text="@string/action_settings"
+        android:text="@string/menu_settings"
         android:textColor="@color/colorTextDefault"
         android:textSize="@dimen/textSizeB"
         android:textStyle="bold"
