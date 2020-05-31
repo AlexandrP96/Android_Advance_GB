@@ -6,14 +6,19 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
-    private String[] data;
+    private List<String> data;
+    private Fragment fragment;
 
-    public ListAdapter(String[] data) {
+    public ListAdapter(List<String> data,  Fragment fragment) {
         this.data = data;
+        this.fragment = fragment;
     }
 
     @NonNull
@@ -26,12 +31,17 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.getTextView().setText(data[position]);
+        TextView textElement = holder.getTextView();
+        textElement.setText(data.get(position));
+
+        if (fragment != null){
+            fragment.registerForContextMenu(textElement);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return data.length;
+        return data == null ? 0 : data.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -40,8 +50,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-            ItemCityView = itemView.findViewById(R.id.ItemCityView);
 
+            ItemCityView = itemView.findViewById(R.id.ItemCityView);
         }
 
         TextView getTextView() {

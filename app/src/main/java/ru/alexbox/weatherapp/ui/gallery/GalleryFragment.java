@@ -3,6 +3,7 @@ package ru.alexbox.weatherapp.ui.gallery;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ru.alexbox.weatherapp.ListAdapter;
 import ru.alexbox.weatherapp.R;
 
@@ -21,20 +25,30 @@ public class GalleryFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_gallery, container, false);
-        String[] data = getResources().getStringArray(R.array.cities);
-        initList(view, data);
+        initList(view);
+        requireActivity();
+        setHasOptionsMenu(true);
         return view;
     }
 
-    private void initList(View view, String[] data) {
-        final RecyclerView recyclerView = view.findViewById(R.id.RecyclerCity);
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.main, menu);
+    }
+
+    private void initList(View view) {
+        RecyclerView recyclerView = view.findViewById(R.id.RecyclerCity);
         recyclerView.setHasFixedSize(true);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        final ListAdapter adapter = new ListAdapter(data);
+        ListAdapter adapter = new ListAdapter(initData(), this);
         recyclerView.setAdapter(adapter);
+    }
+
+    private List<String> initData() {
+        return new ArrayList<>();
     }
 
     @Override

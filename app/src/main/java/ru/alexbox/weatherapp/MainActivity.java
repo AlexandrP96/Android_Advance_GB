@@ -20,19 +20,19 @@ import androidx.appcompat.widget.Toolbar;
 
 import java.util.Locale;
 
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import ru.alexbox.weatherapp.interfaces.IOpenWeather;
 import ru.alexbox.weatherapp.interfaces.SettingsDialogResult;
 import ru.alexbox.weatherapp.retrofit_data.WeatherRequest;
 
 public class MainActivity extends AppCompatActivity implements SettingsDialogResult {
 
+    // Добавить экран с историей поиска
+    // Перенести Retrofit в другой класс
+    // Прикрутить room для сохранения истории поиска
+    // SharedPreferences для сохранения и загрузки последнего города
+
     private SettingsDialogBuilderFragment sdbFragment;
     private AppBarConfiguration mAppBarConfiguration;
-    private IOpenWeather iOpenWeather;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,11 +68,7 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
         setSupportActionBar(toolbar);
     }
 
-    private void initRetrofit() {
-        Retrofit retrofit = MyApplication.getRetrofitInstance();
-        iOpenWeather = retrofit.create(IOpenWeather.class);
-        requestRetrofit("moscow", "metric");
-    }
+
 
     private void initImage() {
         ImageView image = findViewById(R.id.AnimationView);
@@ -103,26 +99,11 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
     public void onSettingsResult(String result) {
         TextView textView = findViewById(R.id.TempTypeView);
         textView.setText(R.string.TempF);
-        requestRetrofit("moscow", "");
+        initRetrofit();
     }
 
-    private void requestRetrofit(String city, String metric) {
-        //noinspection NullableProblems
-        iOpenWeather.loadWeather(city, metric, BuildConfig.WEATHER_API_KEY)
-                .enqueue(new Callback<ru.alexbox.weatherapp.retrofit_data.WeatherRequest>() {
-                    @Override
-                    public void onResponse(Call<ru.alexbox.weatherapp.retrofit_data.WeatherRequest> call,
-                                           Response<ru.alexbox.weatherapp.retrofit_data.WeatherRequest> response) {
-                        if (response.body() != null && response.isSuccessful()) {
-                            DisplayInfo(response);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ru.alexbox.weatherapp.retrofit_data.WeatherRequest> call, Throwable t) {
-                        Toast.makeText(MainActivity.this, R.string.Fail, Toast.LENGTH_SHORT).show();
-                    }
-                });
+    private void initRetrofit() {
+        Retrofit rf = new Retrofit(this::DisplayInfo);
     }
 
     private void DisplayInfo(Response<WeatherRequest> response) {
