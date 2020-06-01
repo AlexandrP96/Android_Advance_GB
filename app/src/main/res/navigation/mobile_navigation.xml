@@ -28,6 +28,12 @@
         <argument
             android:name="myArg"
             app:argType="string" />
+        <action
+            android:id="@+id/action_nav_home_second_to_nav_gallery"
+            app:destination="@id/nav_gallery" />
+        <action
+            android:id="@+id/action_nav_home_second_to_nav_slideshow"
+            app:destination="@id/nav_slideshow" />
     </fragment>
 
     <activity
@@ -35,4 +41,10 @@
         android:name="ru.alexbox.weatherapp.CityActivity"
         android:label="@string/menu_add"
         tools:layout="@layout/activity_city" />
+
+    <activity
+        android:id="@+id/nav_slideshow"
+        android:name="ru.alexbox.weatherapp.HistoryActivity"
+        android:label="@string/menu_history"
+        tools:layout="@layout/activity_history" />
 </navigation>

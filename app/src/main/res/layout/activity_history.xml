@@ -15,24 +15,15 @@
         android:layout_marginTop="20dp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:text="@string/menu_add"
-        android:textColor="@color/colorTextDefault"
-        android:textSize="@dimen/textSizeB"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/ChosenCity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/DefaultValue"
+        android:text="@string/menu_history"
         android:textColor="@color/colorTextDefault"
         android:textSize="@dimen/textSizeB"
         android:textStyle="bold" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/HistoryListRecycler"
-        android:layout_width="220dp"
-        android:layout_height="283dp"
+        android:layout_width="339dp"
+        android:layout_height="459dp"
         android:layout_gravity="center"
         android:layout_marginTop="40dp" />
 

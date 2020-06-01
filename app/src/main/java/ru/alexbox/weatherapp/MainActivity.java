@@ -1,6 +1,7 @@
 package ru.alexbox.weatherapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.widget.TextView;
@@ -9,6 +10,7 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -31,14 +33,12 @@ import static ru.alexbox.weatherapp.parcel.Constants.PARCEL;
 
 public class MainActivity extends AppCompatActivity implements SettingsDialogResult {
 
-    // Добавить экран с историей поиска
-    // Перенести Retrofit в другой класс ++
-    // Прикрутить room для сохранения истории поиска
-    // SharedPreferences для сохранения и загрузки последнего города
-
     private SettingsDialogBuilderFragment sdbFragment;
     private AppBarConfiguration mAppBarConfiguration;
     private TextView City;
+    private TextView Temperature;
+    private String sCity;
+    private SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
         setContentView(R.layout.activity_main);
         initToolbar();
         initFab();
+        initView();
         initDrawer();
         initRetrofit();
     }
@@ -71,6 +72,11 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
     private void initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+    }
+
+    private void initView() {
+        City = findViewById(R.id.CityView);
+        Temperature = findViewById(R.id.TempView);
     }
 
     private void initRetrofit() {
@@ -99,7 +105,6 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        City = findViewById(R.id.CityView);
 
         if (data != null) {
             Parcel parcel = (Parcel) data.getSerializableExtra(PARCEL);
@@ -109,13 +114,50 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
                 Toast.makeText(getApplicationContext(), "Parcel Error!", Toast.LENGTH_SHORT).show();
             }
         }
-
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        SharedPreferences sharedPref = getPreferences(MODE_PRIVATE);
+        savePreferences(sharedPref);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        initPreferences();
+        super.onRestoreInstanceState(savedInstanceState);
+        Toast.makeText(getApplicationContext(), R.string.Toast_restore + sCity, Toast.LENGTH_SHORT).show();
+    }
+
+    private void savePreferences(SharedPreferences preferences) {
+        if (City != null) {
+            sCity = City.getText().toString();
+        } else {
+            sCity = String.valueOf(R.string.city_tokyo);
+        }
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(sCity, "CityValue");
+        editor.apply();
+    }
+
+    private void loadPreferences(SharedPreferences preferences) {
+        if (sCity != null) {
+            sCity = City.getText().toString();
+            String savedCity = preferences.getString(sCity, "CityValue");
+            City.setText(savedCity);
+        }
+    }
+
+    private void initPreferences() {
+        String preferenceCity = preferences.getString(sCity, "CityValue");
+        SharedPreferences sharedPref = getSharedPreferences(preferenceCity, MODE_PRIVATE);
+        loadPreferences(sharedPref);
+    }
+
     private void DisplayInfo(Response<WeatherRequest> response) {
-        City = findViewById(R.id.CityView);
-        TextView Temp = findViewById(R.id.TempView);
         TextView Pressure = findViewById(R.id.PressureViewP);
         TextView Wind = findViewById(R.id.WindViewP);
         TextView Humidity = findViewById(R.id.HumidityViewP);
@@ -132,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
         String city = response.body().getName();
 
         City.setText(city);
-        Temp.setText(String.format(Locale.getDefault(), "+ %.0f", temperature));
+        Temperature.setText(String.format(Locale.getDefault(), "+ %.0f", temperature));
         Wind.setText(String.format(Locale.getDefault(), "%.0f", wind));
         Pressure.setText(String.format(Locale.getDefault(), "%.0f", pressure * 0.750062));
         Humidity.setText(String.format(Locale.getDefault(), "%d", humidity));

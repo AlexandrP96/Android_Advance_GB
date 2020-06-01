@@ -23,7 +23,7 @@ public class CityActivity extends AppCompatActivity implements Constants {
     }
 
     private void initList(String[] data) {
-        final RecyclerView recyclerView = findViewById(R.id.CityListRecycler);
+        final RecyclerView recyclerView = findViewById(R.id.HistoryListRecycler);
         recyclerView.setHasFixedSize(true);
 
         LayoutManager(recyclerView);
