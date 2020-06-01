@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="city_tokyo" tools:ignore="MissingTranslation">tokyo</string>
+    <string name="city_new_york" tools:ignore="MissingTranslation">new_york</string>
+    <string name="city_odessa" tools:ignore="MissingTranslation">odessa</string>
+    <string name="city_kiev" tools:ignore="MissingTranslation">kiev</string>
+    <string name="city_omsk" tools:ignore="MissingTranslation">omsk</string>
+    <string name="city_istanbul" tools:ignore="MissingTranslation">istanbul</string>
+</resources>

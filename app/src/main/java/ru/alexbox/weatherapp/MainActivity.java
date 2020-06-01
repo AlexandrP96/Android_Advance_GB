@@ -1,12 +1,15 @@
 package ru.alexbox.weatherapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.Nullable;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -20,8 +23,11 @@ import java.util.Locale;
 import retrofit2.Response;
 import ru.alexbox.weatherapp.dialog.SettingsDialogBuilderFragment;
 import ru.alexbox.weatherapp.dialog.SettingsDialogResult;
+import ru.alexbox.weatherapp.parcel.Parcel;
 import ru.alexbox.weatherapp.retrofit.Retrofit;
 import ru.alexbox.weatherapp.retrofit_data.WeatherRequest;
+
+import static ru.alexbox.weatherapp.parcel.Constants.PARCEL;
 
 public class MainActivity extends AppCompatActivity implements SettingsDialogResult {
 
@@ -32,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
 
     private SettingsDialogBuilderFragment sdbFragment;
     private AppBarConfiguration mAppBarConfiguration;
+    private TextView City;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +73,10 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
         setSupportActionBar(toolbar);
     }
 
+    private void initRetrofit() {
+        Retrofit rf = new Retrofit(this::DisplayInfo);
+    }
+
     @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -86,12 +97,24 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
         initRetrofit();
     }
 
-    private void initRetrofit() {
-        Retrofit rf = new Retrofit(this::DisplayInfo);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        City = findViewById(R.id.CityView);
+
+        if (data != null) {
+            Parcel parcel = (Parcel) data.getSerializableExtra(PARCEL);
+            if (parcel != null) {
+                City.setText(parcel.currentCity);
+            } else {
+                Toast.makeText(getApplicationContext(), "Parcel Error!", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void DisplayInfo(Response<WeatherRequest> response) {
-        TextView City = findViewById(R.id.CityView);
+        City = findViewById(R.id.CityView);
         TextView Temp = findViewById(R.id.TempView);
         TextView Pressure = findViewById(R.id.PressureViewP);
         TextView Wind = findViewById(R.id.WindViewP);

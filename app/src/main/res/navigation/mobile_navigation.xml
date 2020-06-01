@@ -15,6 +15,7 @@
             android:id="@+id/action_HomeFragment_to_HomeSecondFragment"
             app:destination="@id/nav_home_second" />
     </fragment>
+
     <fragment
         android:id="@+id/nav_home_second"
         android:name="ru.alexbox.weatherapp.ui.home.HomeFragment"
@@ -29,15 +30,9 @@
             app:argType="string" />
     </fragment>
 
-    <fragment
+    <activity
         android:id="@+id/nav_gallery"
-        android:name="ru.alexbox.weatherapp.ui.gallery.GalleryFragment"
+        android:name="ru.alexbox.weatherapp.CityActivity"
         android:label="@string/menu_add"
-        tools:layout="@layout/fragment_gallery" />
-
-    <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="ru.alexbox.weatherapp.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_about"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/activity_city" />
 </navigation>
