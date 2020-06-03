@@ -1,4 +1,4 @@
-package ru.alexbox.weatherapp.interfaces;
+package ru.alexbox.weatherapp.dialog;
 
 import java.net.MalformedURLException;
 

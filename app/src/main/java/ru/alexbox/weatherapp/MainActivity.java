@@ -1,15 +1,17 @@
 package ru.alexbox.weatherapp;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
-import com.squareup.picasso.Picasso;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -20,19 +22,23 @@ import androidx.appcompat.widget.Toolbar;
 
 import java.util.Locale;
 
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import ru.alexbox.weatherapp.interfaces.IOpenWeather;
-import ru.alexbox.weatherapp.interfaces.SettingsDialogResult;
+import ru.alexbox.weatherapp.dialog.SettingsDialogBuilderFragment;
+import ru.alexbox.weatherapp.dialog.SettingsDialogResult;
+import ru.alexbox.weatherapp.parcel.Parcel;
+import ru.alexbox.weatherapp.retrofit.Retrofit;
 import ru.alexbox.weatherapp.retrofit_data.WeatherRequest;
+
+import static ru.alexbox.weatherapp.parcel.Constants.PARCEL;
 
 public class MainActivity extends AppCompatActivity implements SettingsDialogResult {
 
     private SettingsDialogBuilderFragment sdbFragment;
     private AppBarConfiguration mAppBarConfiguration;
-    private IOpenWeather iOpenWeather;
+    private TextView City;
+    private TextView Temperature;
+    private String sCity;
+    private SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +46,9 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
         setContentView(R.layout.activity_main);
         initToolbar();
         initFab();
+        initView();
         initDrawer();
         initRetrofit();
-        initImage();
     }
 
     private void initDrawer() {
@@ -68,22 +74,13 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
         setSupportActionBar(toolbar);
     }
 
-    private void initRetrofit() {
-        Retrofit retrofit = MyApplication.getRetrofitInstance();
-        iOpenWeather = retrofit.create(IOpenWeather.class);
-        requestRetrofit("moscow", "metric");
+    private void initView() {
+        City = findViewById(R.id.CityView);
+        Temperature = findViewById(R.id.TempView);
     }
 
-    private void initImage() {
-        ImageView image = findViewById(R.id.AnimationView);
-        if (image != null) {
-            Picasso.get()
-                    .load("https://unsplash.com/photos/ap3LXI0fPJY")
-                    .resize(90, 90)
-                    .into(image);
-        } else {
-            Toast.makeText(getApplicationContext(), "Picasso Fail", Toast.LENGTH_SHORT).show();
-        }
+    private void initRetrofit() {
+        Retrofit rf = new Retrofit(this::DisplayInfo);
     }
 
     @Override
@@ -103,37 +100,71 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
     public void onSettingsResult(String result) {
         TextView textView = findViewById(R.id.TempTypeView);
         textView.setText(R.string.TempF);
-        requestRetrofit("moscow", "");
+        initRetrofit();
     }
 
-    private void requestRetrofit(String city, String metric) {
-        //noinspection NullableProblems
-        iOpenWeather.loadWeather(city, metric, BuildConfig.WEATHER_API_KEY)
-                .enqueue(new Callback<ru.alexbox.weatherapp.retrofit_data.WeatherRequest>() {
-                    @Override
-                    public void onResponse(Call<ru.alexbox.weatherapp.retrofit_data.WeatherRequest> call,
-                                           Response<ru.alexbox.weatherapp.retrofit_data.WeatherRequest> response) {
-                        if (response.body() != null && response.isSuccessful()) {
-                            DisplayInfo(response);
-                        }
-                    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
-                    @Override
-                    public void onFailure(Call<ru.alexbox.weatherapp.retrofit_data.WeatherRequest> call, Throwable t) {
-                        Toast.makeText(MainActivity.this, R.string.Fail, Toast.LENGTH_SHORT).show();
-                    }
-                });
+        if (data != null) {
+            Parcel parcel = (Parcel) data.getSerializableExtra(PARCEL);
+            if (parcel != null) {
+                City.setText(parcel.currentCity);
+            } else {
+                Toast.makeText(getApplicationContext(), "Parcel Error!", Toast.LENGTH_SHORT).show();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        SharedPreferences sharedPref = getPreferences(MODE_PRIVATE);
+        savePreferences(sharedPref);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        initPreferences();
+        super.onRestoreInstanceState(savedInstanceState);
+        Toast.makeText(getApplicationContext(), R.string.Toast_restore + sCity, Toast.LENGTH_SHORT).show();
+    }
+
+    private void savePreferences(SharedPreferences preferences) {
+        if (City != null) {
+            sCity = City.getText().toString();
+        } else {
+            sCity = String.valueOf(R.string.city_tokyo);
+        }
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(sCity, "CityValue");
+        editor.apply();
+    }
+
+    private void loadPreferences(SharedPreferences preferences) {
+        if (sCity != null) {
+            sCity = City.getText().toString();
+            String savedCity = preferences.getString(sCity, "CityValue");
+            City.setText(savedCity);
+        }
+    }
+
+    private void initPreferences() {
+        String preferenceCity = preferences.getString(sCity, "CityValue");
+        SharedPreferences sharedPref = getSharedPreferences(preferenceCity, MODE_PRIVATE);
+        loadPreferences(sharedPref);
     }
 
     private void DisplayInfo(Response<WeatherRequest> response) {
-        TextView City = findViewById(R.id.CityView);
-        TextView Temp = findViewById(R.id.TempView);
         TextView Pressure = findViewById(R.id.PressureViewP);
         TextView Wind = findViewById(R.id.WindViewP);
         TextView Humidity = findViewById(R.id.HumidityViewP);
         TextView Min = findViewById(R.id.MinimumViewPar);
         TextView Max = findViewById(R.id.MaximumViewPar);
 
+        assert response.body() != null;
         float temperature = response.body().getMain().getTemp();
         float minTemp = response.body().getMain().getTemp_min();
         float maxTemp = response.body().getMain().getTemp_max();
@@ -143,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
         String city = response.body().getName();
 
         City.setText(city);
-        Temp.setText(String.format(Locale.getDefault(), "+ %.0f", temperature));
+        Temperature.setText(String.format(Locale.getDefault(), "+ %.0f", temperature));
         Wind.setText(String.format(Locale.getDefault(), "%.0f", wind));
         Pressure.setText(String.format(Locale.getDefault(), "%.0f", pressure * 0.750062));
         Humidity.setText(String.format(Locale.getDefault(), "%d", humidity));
