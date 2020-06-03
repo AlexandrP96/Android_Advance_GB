@@ -40,6 +40,8 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
     private String sCity;
     private SharedPreferences preferences;
 
+    // FireStarter
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
