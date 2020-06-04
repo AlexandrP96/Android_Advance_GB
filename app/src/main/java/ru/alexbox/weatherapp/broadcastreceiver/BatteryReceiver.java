@@ -11,19 +11,23 @@ import ru.alexbox.weatherapp.R;
 
 public class BatteryReceiver extends BroadcastReceiver {
 
-    public static final String CHANNEL_ID = "2";
+    public static final String CHANNEL_ID = "1";
     private int msgID = 2;
     private String name = "Weather App";
     private String message = "Your battery is low";
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.drawable.cloydys)
-                .setContentTitle(name)
-                .setContentText(message);
+        NotificationCompat.Builder builder = getBuilder(context);
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         assert notificationManager != null;
         notificationManager.notify(msgID, builder.build());
+    }
+
+    private NotificationCompat.Builder getBuilder(Context context) {
+        return new NotificationCompat.Builder(context, CHANNEL_ID)
+                    .setSmallIcon(R.drawable.cloydys)
+                    .setContentTitle(name)
+                    .setContentText(message);
     }
 }

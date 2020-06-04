@@ -18,12 +18,16 @@ public class AirplaneReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.drawable.cloud)
-                .setContentTitle(name)
-                .setContentText(message);
+        NotificationCompat.Builder builder = getBuilder(context);
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         assert notificationManager != null;
         notificationManager.notify(msgID, builder.build());
+    }
+
+    private NotificationCompat.Builder getBuilder(Context context) {
+        return new NotificationCompat.Builder(context, CHANNEL_ID)
+                    .setSmallIcon(R.drawable.cloud)
+                    .setContentTitle(name)
+                    .setContentText(message);
     }
 }

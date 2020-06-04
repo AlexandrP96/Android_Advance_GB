@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.widget.TextView;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+
 
 import androidx.annotation.Nullable;
 import androidx.navigation.NavController;
@@ -39,17 +41,13 @@ import static ru.alexbox.weatherapp.parcel.Constants.PARCEL;
 
 public class MainActivity extends AppCompatActivity implements SettingsDialogResult {
 
-    public static final String CHANNEL_NAME = "name";
+    public static final String CHANNEL_NAME = "discovery";
     private SettingsDialogBuilderFragment sdbFragment;
     private AppBarConfiguration mAppBarConfiguration;
     private BroadcastReceiver airplaneReceiver;
     private BroadcastReceiver batteryReceiver;
     private TextView City;
     private TextView Temperature;
-
-    // Убрал savedState
-    // Проверка подключения!
-    // Проверка батарейки!
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
         initFab();
         initDrawer();
         initChannel();
+        initFirebase();
     }
 
     private void initDrawer() {
@@ -105,6 +104,16 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             assert notificationManager != null;
             notificationManager.createNotificationChannel(notificationChannel);
+        }
+    }
+
+    private void initFirebase() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationManager notification = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            int importance = NotificationManager.IMPORTANCE_LOW;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, importance);
+            assert notification != null;
+            notification.createNotificationChannel(channel);
         }
     }
 
