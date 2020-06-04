@@ -6,7 +6,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.widget.TextView;
@@ -15,7 +14,6 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -48,11 +46,8 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
     private BroadcastReceiver batteryReceiver;
     private TextView City;
     private TextView Temperature;
-    private String sCity;
-    private SharedPreferences preferences;
 
-
-    // FireStarter
+    // Убрал savedState
     // Проверка подключения!
     // Проверка батарейки!
 
@@ -114,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
     }
 
     private void initRetrofit() {
-        Retrofit rf = new Retrofit(this::DisplayInfo);
+        new Retrofit(this::DisplayInfo);
     }
 
     @Override
@@ -145,46 +140,6 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
         TextView textView = findViewById(R.id.TempTypeView);
         textView.setText(R.string.TempF);
         initRetrofit();
-    }
-
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        SharedPreferences sharedPref = getPreferences(MODE_PRIVATE);
-        savePreferences(sharedPref);
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-        initPreferences();
-        super.onRestoreInstanceState(savedInstanceState);
-        Toast.makeText(getApplicationContext(), R.string.Toast_restore + sCity, Toast.LENGTH_SHORT).show();
-    }
-
-    private void savePreferences(SharedPreferences preferences) {
-        if (City != null) {
-            sCity = City.getText().toString();
-        } else {
-            sCity = String.valueOf(R.string.city_tokyo);
-        }
-
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(sCity, "CityValue");
-        editor.apply();
-    }
-
-    private void loadPreferences(SharedPreferences preferences) {
-        if (sCity != null) {
-            sCity = City.getText().toString();
-            String savedCity = preferences.getString(sCity, "CityValue");
-            City.setText(savedCity);
-        }
-    }
-
-    private void initPreferences() {
-        String preferenceCity = preferences.getString(sCity, "CityValue");
-        SharedPreferences sharedPref = getSharedPreferences(preferenceCity, MODE_PRIVATE);
-        loadPreferences(sharedPref);
     }
 
     @Override
