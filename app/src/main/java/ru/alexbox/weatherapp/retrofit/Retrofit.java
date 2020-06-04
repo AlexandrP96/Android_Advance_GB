@@ -10,6 +10,8 @@ import ru.alexbox.weatherapp.retrofit_data.WeatherRequest;
 
 public class Retrofit {
 
+    public static final String CHANNEL_ID = "1";
+
     private final RetrofitListener retrofitListener;
     private IOpenWeather iOpenWeather;
 

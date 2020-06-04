@@ -1,6 +1,11 @@
 package ru.alexbox.weatherapp;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
@@ -23,6 +28,7 @@ import androidx.appcompat.widget.Toolbar;
 import java.util.Locale;
 
 import retrofit2.Response;
+import ru.alexbox.weatherapp.broadcastreceiver.AirplaneReceiver;
 import ru.alexbox.weatherapp.dialog.SettingsDialogBuilderFragment;
 import ru.alexbox.weatherapp.dialog.SettingsDialogResult;
 import ru.alexbox.weatherapp.parcel.Parcel;
@@ -30,27 +36,40 @@ import ru.alexbox.weatherapp.retrofit.Retrofit;
 import ru.alexbox.weatherapp.retrofit_data.WeatherRequest;
 
 import static ru.alexbox.weatherapp.parcel.Constants.PARCEL;
+import static ru.alexbox.weatherapp.retrofit.Retrofit.CHANNEL_ID;
 
 public class MainActivity extends AppCompatActivity implements SettingsDialogResult {
 
+    public static final String CHANNEL_NAME = "name";
     private SettingsDialogBuilderFragment sdbFragment;
     private AppBarConfiguration mAppBarConfiguration;
+    private BroadcastReceiver airplaneReceiver;
     private TextView City;
     private TextView Temperature;
     private String sCity;
     private SharedPreferences preferences;
 
     // FireStarter
+    // Проверка подключения!
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        airplaneReceiver = new AirplaneReceiver();
+        registerReceiver(airplaneReceiver, new IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED));
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        initView();
+        initRetrofit();
         initToolbar();
         initFab();
-        initView();
         initDrawer();
-        initRetrofit();
+        initChannel();
     }
 
     private void initDrawer() {
@@ -79,6 +98,14 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
     private void initView() {
         City = findViewById(R.id.CityView);
         Temperature = findViewById(R.id.TempView);
+    }
+
+    private void initChannel() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_LOW);
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
     }
 
     private void initRetrofit() {
@@ -182,5 +209,11 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
         Humidity.setText(String.format(Locale.getDefault(), "%d", humidity));
         Min.setText(String.format(Locale.getDefault(), "%.0f", minTemp));
         Max.setText(String.format(Locale.getDefault(), "%.0f", maxTemp));
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(airplaneReceiver);
     }
 }
