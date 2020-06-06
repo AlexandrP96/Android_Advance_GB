@@ -41,6 +41,8 @@ import static ru.alexbox.weatherapp.parcel.Constants.PARCEL;
 
 public class MainActivity extends AppCompatActivity implements SettingsDialogResult {
 
+    // Episode 7
+
     public static final String CHANNEL_NAME = "discovery";
     private SettingsDialogBuilderFragment sdbFragment;
     private AppBarConfiguration mAppBarConfiguration;
