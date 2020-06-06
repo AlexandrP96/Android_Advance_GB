@@ -27,12 +27,12 @@ import androidx.appcompat.widget.Toolbar;
 
 import java.util.Locale;
 
-import retrofit2.Response;
 import ru.alexbox.weatherapp.broadcastreceiver.AirplaneReceiver;
 import ru.alexbox.weatherapp.broadcastreceiver.BatteryReceiver;
 import ru.alexbox.weatherapp.dialog.SettingsDialogBuilderFragment;
 import ru.alexbox.weatherapp.dialog.SettingsDialogResult;
 import ru.alexbox.weatherapp.parcel.Parcel;
+import ru.alexbox.weatherapp.retrofit.MyApplication;
 import ru.alexbox.weatherapp.retrofit.Retrofit;
 import ru.alexbox.weatherapp.retrofit_data.WeatherRequest;
 
@@ -40,8 +40,6 @@ import static ru.alexbox.weatherapp.broadcastreceiver.AirplaneReceiver.CHANNEL_I
 import static ru.alexbox.weatherapp.parcel.Constants.PARCEL;
 
 public class MainActivity extends AppCompatActivity implements SettingsDialogResult {
-
-    // Episode 7
 
     public static final String CHANNEL_NAME = "discovery";
     private SettingsDialogBuilderFragment sdbFragment;
@@ -120,7 +118,12 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
     }
 
     private void initRetrofit() {
-        new Retrofit(this::DisplayInfo);
+        Retrofit.RetrofitListener retrofit = new Retrofit.RetrofitListener() {
+            @Override
+            protected void onResult(Float response) {
+                Temperature.setText(String.format(Locale.getDefault(), "+ %.0f", response));
+            }
+        };
     }
 
     @Override
@@ -173,21 +176,21 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
         unregisterReceiver(batteryReceiver);
     }
 
-    private void DisplayInfo(Response<WeatherRequest> response) {
+    private void DisplayInfo(WeatherRequest response) {
         TextView Pressure = findViewById(R.id.PressureViewP);
         TextView Wind = findViewById(R.id.WindViewP);
         TextView Humidity = findViewById(R.id.HumidityViewP);
         TextView Min = findViewById(R.id.MinimumViewPar);
         TextView Max = findViewById(R.id.MaximumViewPar);
 
-        assert response.body() != null;
-        float temperature = response.body().getMain().getTemp();
-        float minTemp = response.body().getMain().getTemp_min();
-        float maxTemp = response.body().getMain().getTemp_max();
-        float wind = response.body().getWind().getSpeed();
-        float pressure = response.body().getMain().getPressure();
-        int humidity = response.body().getMain().getHumidity();
-        String city = response.body().getName();
+        // float temperature = response.body().getMain().getTemp();
+        float temperature = response.getMain().getTemp();
+        float minTemp = response.getMain().getTemp_min();
+        float maxTemp = response.getMain().getTemp_max();
+        float wind = response.getWind().getSpeed();
+        float pressure = response.getMain().getPressure();
+        int humidity = response.getMain().getHumidity();
+        String city = response.getName();
 
         City.setText(city);
         Temperature.setText(String.format(Locale.getDefault(), "+ %.0f", temperature));

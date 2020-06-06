@@ -8,7 +8,8 @@ import retrofit2.Response;
 import ru.alexbox.weatherapp.BuildConfig;
 import ru.alexbox.weatherapp.retrofit_data.WeatherRequest;
 
-public class Retrofit {
+
+public abstract class Retrofit {
 
     private final RetrofitListener retrofitListener;
 
@@ -16,11 +17,7 @@ public class Retrofit {
         this.retrofitListener = retrofitListener;
     }
 
-    public interface RetrofitListener {
-        void onResult(Response<WeatherRequest> wr);
-    }
-
-    void RetrofitLogic() {
+    void Logic() {
         retrofit2.Retrofit retrofit = MyApplication.getRetrofitInstance();
         IOpenWeather iOpenWeather = retrofit.create(IOpenWeather.class);
         iOpenWeather.loadWeather("moscow", "metric", BuildConfig.WEATHER_API_KEY)
@@ -29,7 +26,9 @@ public class Retrofit {
                     public void onResponse(Call<ru.alexbox.weatherapp.retrofit_data.WeatherRequest> call,
                                            Response<ru.alexbox.weatherapp.retrofit_data.WeatherRequest> response) {
                         if (response.body() != null && response.isSuccessful()) {
-                            retrofitListener.onResult(response);
+                            WeatherRequest weatherRequest = response.body();
+                            Float temp = response.body().getMain().getTemp();
+                            retrofitListener.onResult(temp);
                         }
                     }
 
@@ -38,5 +37,10 @@ public class Retrofit {
                         Log.println(Log.ERROR, "Retrofit", "onFailure");
                     }
                 });
+
+    }
+
+    public abstract static class RetrofitListener {
+        protected abstract void onResult(Float response);
     }
 }
