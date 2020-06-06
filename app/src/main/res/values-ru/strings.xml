@@ -42,4 +42,6 @@
     <string name="icon">icon</string>
 
     <string name="Toast_restore">Последнее: </string>
+
+    <string name="Broad_Airplane">Включен авиарежим!</string>
 </resources>

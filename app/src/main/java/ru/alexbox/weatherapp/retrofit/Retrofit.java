@@ -11,7 +11,6 @@ import ru.alexbox.weatherapp.retrofit_data.WeatherRequest;
 public class Retrofit {
 
     private final RetrofitListener retrofitListener;
-    private IOpenWeather iOpenWeather;
 
     public Retrofit(RetrofitListener retrofitListener) {
         this.retrofitListener = retrofitListener;
@@ -23,7 +22,7 @@ public class Retrofit {
 
     void RetrofitLogic() {
         retrofit2.Retrofit retrofit = MyApplication.getRetrofitInstance();
-        iOpenWeather = retrofit.create(IOpenWeather.class);
+        IOpenWeather iOpenWeather = retrofit.create(IOpenWeather.class);
         iOpenWeather.loadWeather("moscow", "metric", BuildConfig.WEATHER_API_KEY)
                 .enqueue(new Callback<ru.alexbox.weatherapp.retrofit_data.WeatherRequest>() {
                     @Override
