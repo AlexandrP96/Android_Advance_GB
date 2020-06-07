@@ -6,12 +6,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import ru.alexbox.weatherapp.BuildConfig;
-import ru.alexbox.weatherapp.retrofit_data.WeatherRequest;
 
 
 public abstract class Retrofit {
 
     private final RetrofitListener retrofitListener;
+    private String city = "moscow";
 
     public Retrofit(RetrofitListener retrofitListener) {
         this.retrofitListener = retrofitListener;
@@ -20,13 +20,12 @@ public abstract class Retrofit {
     void Logic() {
         retrofit2.Retrofit retrofit = MyApplication.getRetrofitInstance();
         IOpenWeather iOpenWeather = retrofit.create(IOpenWeather.class);
-        iOpenWeather.loadWeather("moscow", "metric", BuildConfig.WEATHER_API_KEY)
+        iOpenWeather.loadWeather(city, "metric", BuildConfig.WEATHER_API_KEY)
                 .enqueue(new Callback<ru.alexbox.weatherapp.retrofit_data.WeatherRequest>() {
                     @Override
                     public void onResponse(Call<ru.alexbox.weatherapp.retrofit_data.WeatherRequest> call,
                                            Response<ru.alexbox.weatherapp.retrofit_data.WeatherRequest> response) {
                         if (response.body() != null && response.isSuccessful()) {
-                            WeatherRequest weatherRequest = response.body();
                             Float temp = response.body().getMain().getTemp();
                             retrofitListener.onResult(temp);
                         }

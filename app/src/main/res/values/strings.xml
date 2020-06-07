@@ -52,4 +52,6 @@
     <string name="Toast_restore">Last: </string>
 
     <string name="Broad_Airplane">Airplane mode is on!</string>
+    <string name="ButtonGeo">Geo search</string>
+    <string name="google_maps_key">google_maps_key</string>
 </resources>

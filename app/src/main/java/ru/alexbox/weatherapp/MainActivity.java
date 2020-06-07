@@ -1,7 +1,9 @@
 package ru.alexbox.weatherapp;
 
+import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,9 +11,15 @@ import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.GeofencingClient;
+import com.google.android.gms.location.GeofencingRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
@@ -32,7 +40,6 @@ import ru.alexbox.weatherapp.broadcastreceiver.BatteryReceiver;
 import ru.alexbox.weatherapp.dialog.SettingsDialogBuilderFragment;
 import ru.alexbox.weatherapp.dialog.SettingsDialogResult;
 import ru.alexbox.weatherapp.parcel.Parcel;
-import ru.alexbox.weatherapp.retrofit.MyApplication;
 import ru.alexbox.weatherapp.retrofit.Retrofit;
 import ru.alexbox.weatherapp.retrofit_data.WeatherRequest;
 
@@ -48,6 +55,11 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
     private BroadcastReceiver batteryReceiver;
     private TextView City;
     private TextView Temperature;
+
+    private double latitude;
+    private double longitude;
+    private float radius;
+    private String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
         initDrawer();
         initChannel();
         initFirebase();
+        initButton();
     }
 
     private void initDrawer() {
@@ -118,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
     }
 
     private void initRetrofit() {
-        Retrofit.RetrofitListener retrofit = new Retrofit.RetrofitListener() {
+        new Retrofit.RetrofitListener() {
             @Override
             protected void onResult(Float response) {
                 Temperature.setText(String.format(Locale.getDefault(), "+ %.0f", response));
@@ -199,5 +212,49 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
         Humidity.setText(String.format(Locale.getDefault(), "%d", humidity));
         Min.setText(String.format(Locale.getDefault(), "%.0f", minTemp));
         Max.setText(String.format(Locale.getDefault(), "%.0f", maxTemp));
+    }
+
+    private void initButton() {
+        Button button;
+        button = findViewById(R.id.GeoButton);
+        button.setOnClickListener(v -> {
+            initClient();
+        });
+    }
+
+    @SuppressLint("MissingPermission")
+    private void initClient() {
+        GeofencingClient client;
+        client = LocationServices.getGeofencingClient(getApplicationContext());
+
+        Geofence.Builder geofence = new Geofence.Builder()
+                .setRequestId(id)
+                .setCircularRegion(latitude, longitude, radius);
+
+        geofence.build();
+
+        GeofencingRequest geofencingRequest = new GeofencingRequest.Builder()
+                .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
+                .addGeofence(geofence.build()).build();
+
+        Intent geoService = new Intent(MainActivity.this, GeoFenceService.class);
+        PendingIntent pendingIntent = PendingIntent.getService(MainActivity.this, 0, geoService,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        client.addGeofences(geofencingRequest, pendingIntent);
+
+        googleApi();
+    }
+
+    private void googleApi() {
+        GoogleApiClient.ConnectionCallbacks connectionCallBack = null;
+        if (connectionCallBack != null) {
+            GoogleApiClient googleApiClient = new GoogleApiClient.Builder(MainActivity.this)
+                    .addApi(LocationServices.API)
+                    .addConnectionCallbacks(connectionCallBack)
+                    .build();
+
+            googleApiClient.connect();
+        }
     }
 }
