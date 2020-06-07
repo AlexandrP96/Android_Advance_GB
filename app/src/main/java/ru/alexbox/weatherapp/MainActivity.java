@@ -39,6 +39,7 @@ import ru.alexbox.weatherapp.broadcastreceiver.AirplaneReceiver;
 import ru.alexbox.weatherapp.broadcastreceiver.BatteryReceiver;
 import ru.alexbox.weatherapp.dialog.SettingsDialogBuilderFragment;
 import ru.alexbox.weatherapp.dialog.SettingsDialogResult;
+import ru.alexbox.weatherapp.geo.GeoFenceService;
 import ru.alexbox.weatherapp.parcel.Parcel;
 import ru.alexbox.weatherapp.retrofit.Retrofit;
 import ru.alexbox.weatherapp.retrofit_data.WeatherRequest;
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
     private double longitude;
     private float radius;
     private String id;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
