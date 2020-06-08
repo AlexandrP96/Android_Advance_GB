@@ -23,7 +23,6 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
-
 import androidx.annotation.Nullable;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -47,6 +46,7 @@ import ru.alexbox.weatherapp.retrofit_data.WeatherRequest;
 import static ru.alexbox.weatherapp.broadcastreceiver.AirplaneReceiver.CHANNEL_ID;
 import static ru.alexbox.weatherapp.parcel.Constants.PARCEL;
 
+@SuppressWarnings("ResultOfMethodCallIgnored")
 public class MainActivity extends AppCompatActivity implements SettingsDialogResult {
 
     public static final String CHANNEL_NAME = "discovery";
@@ -57,9 +57,6 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
     private TextView City;
     private TextView Temperature;
 
-    private double latitude;
-    private double longitude;
-    private float radius;
     private String id;
 
 
@@ -229,23 +226,38 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
         GeofencingClient client;
         client = LocationServices.getGeofencingClient(getApplicationContext());
 
-        Geofence.Builder geofence = new Geofence.Builder()
-                .setRequestId(id)
-                .setCircularRegion(latitude, longitude, radius);
+        double latitude = 55.751244;
+        double longitude = 37.618423;
+        float radius = 100.0f;
+        Geofence.Builder geofence = getBuilder(latitude, longitude, radius);
 
         geofence.build();
 
-        GeofencingRequest geofencingRequest = new GeofencingRequest.Builder()
-                .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
-                .addGeofence(geofence.build()).build();
+        GeofencingRequest geofencingRequest = getGeofencingRequest(geofence);
 
-        Intent geoService = new Intent(MainActivity.this, GeoFenceService.class);
-        PendingIntent pendingIntent = PendingIntent.getService(MainActivity.this, 0, geoService,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = getPendingIntent();
 
         client.addGeofences(geofencingRequest, pendingIntent);
 
         googleApi();
+    }
+
+    private PendingIntent getPendingIntent() {
+        Intent geoService = new Intent(MainActivity.this, GeoFenceService.class);
+        return PendingIntent.getService(MainActivity.this, 0, geoService,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    private GeofencingRequest getGeofencingRequest(Geofence.Builder geofence) {
+        return new GeofencingRequest.Builder()
+                    .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
+                    .addGeofence(geofence.build()).build();
+    }
+
+    private Geofence.Builder getBuilder(double latitude, double longitude, float radius) {
+        return new Geofence.Builder()
+                    .setRequestId(id)
+                    .setCircularRegion(latitude, longitude, radius);
     }
 
     private void googleApi() {
