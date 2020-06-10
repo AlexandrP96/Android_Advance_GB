@@ -44,4 +44,5 @@
     <string name="Toast_restore">Последнее: </string>
 
     <string name="Broad_Airplane">Включен авиарежим!</string>
+    <string name="ButtonGeo">Гео поиск</string>
 </resources>
