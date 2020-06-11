@@ -32,6 +32,27 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug {
+            applicationIdSuffix '.debug'
+        }
+        staging {
+            initWith debug
+            applicationIdSuffix ".debugStaging"
+            debuggable true
+        }
+    }
+    flavorDimensions 'example'
+    productFlavors {
+        LiteEdition {
+            dimension 'example'
+            versionNameSuffix '.lite'
+            applicationIdSuffix ".lite"
+        }
+        StandardEdition {
+            dimension 'example'
+            applicationIdSuffix '.standard'
+            versionNameSuffix '.standard'
+        }
     }
 
 }
@@ -48,7 +69,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'com.google.firebase:firebase-messaging:20.2.0'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'com.google.code.gson:gson:2.8.5'

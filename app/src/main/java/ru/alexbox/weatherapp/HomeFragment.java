@@ -1,4 +1,4 @@
-package ru.alexbox.weatherapp.ui.home;
+package ru.alexbox.weatherapp;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
 
     private String id;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,7 +78,6 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
         initDrawer();
         initChannel();
         initFirebase();
-        initButton();
     }
 
     private void initDrawer() {
@@ -211,14 +209,6 @@ public class MainActivity extends AppCompatActivity implements SettingsDialogRes
         Humidity.setText(String.format(Locale.getDefault(), "%d", humidity));
         Min.setText(String.format(Locale.getDefault(), "%.0f", minTemp));
         Max.setText(String.format(Locale.getDefault(), "%.0f", maxTemp));
-    }
-
-    private void initButton() {
-        Button button;
-        button = findViewById(R.id.GeoButton);
-        button.setOnClickListener(v -> {
-            initClient();
-        });
     }
 
     @SuppressLint("MissingPermission")
